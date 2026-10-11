@@ -34,8 +34,8 @@ O objetivo é implementar um jogo multiplayer com **troca de mensagens** entre p
 # 📌 Pré-requisitos
 
 - **Windows** (usa Winsock2)
-- **GCC via MinGW-w64** com suporte a Pthreads (winpthreads) ([MSYS2](https://www.msys2.org/) é uma forma simples de instalar)
-- Porta **5000** livre
+- **GCC via MinGW-w64** com suporte a Pthreads (winpthreads). Testado com o Embarcadero Dev-C++ 6.3 (TDM-GCC 9.2). Alternativa: [MSYS2](https://www.msys2.org/)
+- - Porta **5000** livre
 
 Verifique a instalação com:
 
@@ -51,6 +51,7 @@ gcc --version
 JokenPo/
 ├── protocolo.h    # Constantes, fases do jogo, códigos de erro e struct Estado (usado por servidor e cliente)
 ├── servidor.c     # Servidor: guarda o estado real do jogo, valida as jogadas e responde aos clientes
+├── .gitignore     
 └── README.md      # Documentação do projeto
 ```
 
@@ -213,6 +214,7 @@ Para jogar em máquinas diferentes, o cliente deve apontar para o IP do servidor
 ```bash
 telnet localhost 5000
 ```
+> O telnet precisa estar ativado no Windows (Painel de Controle > Programas > Ativar ou desativar recursos do Windows > Cliente Telnet). Evite usar as setas e o backspace durante o teste, pois o telnet envia caracteres de controle junto da mensagem. A saída pode aparecer "escalonada" na tela; é só um efeito visual do telnet do Windows.
 
 Exemplo de teste de uma rodada (digite as linhas e pressione Enter):
 
@@ -241,7 +243,8 @@ Testes de erro:
 - **Mensagem `C<id>:<valor>`:** é enviada aos dois jogadores. Cada cliente compara o `id` com o seu para saber se deve cobrir.
 - **Empate com algum jogador sem fichas:** se os dois apostam tudo e empatam, o pote acumulado deixaria o jogo sem apostas possíveis. Nesse caso específico o pote é dividido igualmente entre os dois. Em empates normais, o pote acumula.
 - **Desconexão:** se um jogador cai ou envia `Q`, o outro recebe `F<id>` e vence por W.O.
-- **Logs:** o servidor imprime no console cada mensagem recebida (`<-`) e enviada (`->`), com horário.
+- **Logs:** o servidor imprime no console cada mensagem recebida (`<-`) e enviada (`->`), com horário e uma tradução legível do significado. O protocolo em si não muda.
+- **Comandos em minúsculo:** o servidor aceita `1a30` ou `2j3` além das versões em maiúsculo, o que facilita os testes manuais.
 
 ---
 
